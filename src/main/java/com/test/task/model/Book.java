@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigInteger;
 import java.util.Objects;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.Objects;
 public class Book {
 
     @Id
-    private Long id;
+    private BigInteger id;
 
     @Column(nullable = false, length = 150)
     private String title;
@@ -26,7 +27,7 @@ public class Book {
     @Column(length = 150)
     private String description;
 
-    public Book(long id, String title, String author, String description) {
+    public Book(BigInteger id, String title, String author, String description) {
         this.id = id;
         this.title = title;
         this.author = author;

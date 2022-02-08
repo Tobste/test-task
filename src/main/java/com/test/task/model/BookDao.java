@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public final class BookDao implements Dao<Book, BookQuery> {
 
     RowMapper<Book> ROW_MAPPER_BOOK = (ResultSet resultSet, int rowNum) -> {
         return new Book(
-                resultSet.getLong("id"),
+                new BigInteger(resultSet.getString("id")),
                 resultSet.getString("title"),
                 resultSet.getString("author"),
                 resultSet.getString("description"));
@@ -51,17 +52,11 @@ public final class BookDao implements Dao<Book, BookQuery> {
     }
 
     @Override
-    public Book save(Book book) {
-        if (book.getId() == null) {
-            Long maxId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM book", Long.class);
-            book.setId(maxId != null? maxId + 1: 1);
-        }
-        jdbcTemplate.update(
-                "INSERT INTO book VALUES (?, ?, ?, ?)",
-                book.getId(),
+    public int save(Book book) {
+        return jdbcTemplate.update(
+                "INSERT INTO book VALUES (book_seq.NEXTVAL, ?, ?, ?)",
                 book.getTitle(),
                 book.getAuthor(),
                 book.getDescription());
-        return book;
     }
 }

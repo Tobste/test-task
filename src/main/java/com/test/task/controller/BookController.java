@@ -15,7 +15,7 @@ public class BookController {
     private BookDao bookDao;
 
     @PostMapping("/books/add")
-    public Book create(@RequestBody Book book) {
+    public int create(@RequestBody Book book) {
         return bookDao.save(book);
     }
 

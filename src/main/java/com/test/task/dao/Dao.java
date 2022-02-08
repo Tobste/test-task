@@ -8,5 +8,5 @@ public interface Dao<T, S> {
 
     List<S> findAllGroupAuthor();
 
-    T save(T book);
+    int save(T book);
 }
